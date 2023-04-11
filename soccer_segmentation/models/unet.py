@@ -54,5 +54,4 @@ def Unet(input_shape=(256, 256, 3), *, n_labels, dropout):
 
 
 if __name__ == '__main__':
-    model = Unet((256, 256, 3), n_labels=3, dropout=0.2)
-    model.summary()
+    print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
