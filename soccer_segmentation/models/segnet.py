@@ -77,7 +77,7 @@ def segnet(
     conv_14 = Activation("relu")(conv_14)
     conv_15 = Convolution2D(512, (kernel, kernel), padding="same")(conv_14)
     conv_15 = BatchNormalization()(conv_15)
-    conv_15 = Activation("relu")(conv_15)
+    conv_15 = Activation("relu")(c10onv_15)
     conv_16 = Convolution2D(512, (kernel, kernel), padding="same")(conv_15)
     conv_16 = BatchNormalization()(conv_16)
     conv_16 = Activation("relu")(conv_16)
