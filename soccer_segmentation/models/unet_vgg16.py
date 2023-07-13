@@ -41,6 +41,8 @@ def unet_vgg16(
         output_mode="softmax",
         dropout=0.1):
 
+    print("Building UNetVGG16")
+
     base_model = VGG16(input_shape=input_shape, include_top=False, weights='imagenet')
 
     base_model.layers.pop()
@@ -50,7 +52,6 @@ def unet_vgg16(
         layer.trainable = False
 
     base_model = Model(base_model.input, base_model.layers[-4].output)
-    base_model.summary()
 
     temp1 = base_model.get_layer("block1_conv2").output
     temp2 = base_model.get_layer("block2_conv2").output

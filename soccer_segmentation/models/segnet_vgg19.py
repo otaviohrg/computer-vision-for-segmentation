@@ -15,6 +15,8 @@ def segnet_vgg19(
         pool_size=(2, 2),
         output_mode="softmax"):
 
+    print("Building SegNetVGG19")
+
     base_model = VGG19(input_shape=input_shape, include_top=False, weights='imagenet')
 
     base_model.layers.pop()
@@ -24,7 +26,6 @@ def segnet_vgg19(
         layer.trainable = False
 
     base_model = Model(base_model.input, base_model.layers[-4].output)
-    base_model.summary()
 
     pool_1, mask_1 = MaxPoolingWithArgmax2D(pool_size)(base_model.get_layer("block1_conv2").output)
 

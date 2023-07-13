@@ -218,7 +218,7 @@ def run():
     #m = segnet(input_shape=(256, 256, 3), n_labels=3)
     #m = Unet(input_shape=(256, 256, 3), n_labels=3, dropout=0.2)
     #m = segnet_resnet50(input_shape=(256, 256, 3), n_labels=3)
-    #m = unet_resnet18(input_shape=(256, 256, 3), n_labels=3)
+    m = unet_resnet18(input_shape=(256, 256, 3), n_labels=3)
     #m = unet_resnet50(input_shape=(256, 256, 3), n_labels=3, dropout=0.2)
     #m = segnet_mobilenetsmall(input_shape=(256, 256, 3), n_labels=3)
     #m = segnet_mobilenetlarge(input_shape=(256, 256, 3), n_labels=3)
@@ -227,7 +227,7 @@ def run():
     #m = segnet_vgg16(input_shape=(256, 256, 3), n_labels=3)
     #m = segnet_vgg19(input_shape=(256, 256, 3), n_labels=3)
     #m = unet_vgg16(input_shape=(256, 256, 3), n_labels=3)
-    m = unet_vgg19(input_shape=(256, 256, 3), n_labels=3)
+    #m = unet_vgg19(input_shape=(256, 256, 3), n_labels=3)
     model_name = "unet_vgg19"
     run_freezed(model_name, m)
     run_unfreezed(model_name, m)

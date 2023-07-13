@@ -14,6 +14,7 @@ def segnet_resnet50(
         pool_size=(2, 2),
         output_mode="softmax"):
 
+    print("Building SegNetResNet50")
     ResNet50, preprocess_input = Classifiers.get('resnet50')
     base_model = ResNet50((256, 256, 3), weights='imagenet')
 
@@ -23,7 +24,6 @@ def segnet_resnet50(
     for layer in base_model.layers:
         layer.trainable = False
     base_model = Model(base_model.input, base_model.layers[-3].output)
-    #base_model.summary()
 
     pool_1, mask_1 = MaxPoolingWithArgmax2D(pool_size)(base_model.get_layer("conv0").output)
 
@@ -95,7 +95,6 @@ def segnet_resnet50(
         input_shape=(int(input_shape[0] / 2), int(input_shape[1] / 2), n_labels))(conv_26)
 
     outputs = Activation(output_mode)(conv_26)
-    print("Build decoder done..")
 
     model = Model(inputs=base_model.inputs, outputs=outputs, name="SegNetResnet50")
 

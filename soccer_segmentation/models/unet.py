@@ -31,6 +31,8 @@ def up_block(x, y, filters):
 
 
 def Unet(input_shape=(256, 256, 3), *, n_labels, dropout):
+    print("Building UNet")
+
     filter = [64, 128, 256, 512, 1024]
     # encode
     input = Input(shape=input_shape)

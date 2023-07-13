@@ -42,6 +42,8 @@ def unet_resnet50(
 
     filter = [64, 128, 256, 512]
 
+    print("Building UNetResNet50")
+
     ResNet50, preprocess_input = Classifiers.get('resnet50')
     base_model = ResNet50((256, 256, 3), weights='imagenet')
 
@@ -52,7 +54,6 @@ def unet_resnet50(
         layer.trainable = False
 
     base_model = Model(base_model.input, base_model.layers[-3].output)
-    base_model.summary()
 
     temp1 = base_model.get_layer("relu0").output
     temp2 = base_model.get_layer("stage2_unit1_relu1").output

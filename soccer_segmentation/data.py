@@ -31,3 +31,14 @@ def load_data(dataset_path, training_data, val_data, test_data):
     test_dataset = test_dataset.map(parse_image)
 
     return train_dataset, val_dataset, test_dataset
+
+
+def load_test_data(dataset_path, test_data):
+    N_CHANNELS = 3
+    N_CLASSES = 151
+    SEED = 42
+
+    test_dataset = tf.data.Dataset.list_files(dataset_path + test_data + "*", seed=SEED)
+    test_dataset = test_dataset.map(parse_image)
+
+    return test_dataset

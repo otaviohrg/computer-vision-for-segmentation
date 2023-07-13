@@ -43,6 +43,8 @@ def unet_mobilenetv3large(
 
     filter = [64, 128, 256, 512]
 
+    print("Building UNetMobileNetLarge")
+
     base_model = MobileNetV3Large(input_shape=input_shape, weights='imagenet')
 
     base_model.layers.pop()
@@ -52,7 +54,6 @@ def unet_mobilenetv3large(
         layer.trainable = False
 
     base_model = Model(base_model.input, base_model.layers[-3].output)
-    base_model.summary()
 
     temp1 = base_model.get_layer("re_lu_2").output
     temp2 = base_model.get_layer("re_lu_6").output

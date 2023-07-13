@@ -15,6 +15,7 @@ def segnet_mobilenetsmall(
         pool_size=(2, 2),
         output_mode="softmax"):
 
+    print("Building SegNetMobileNetSmall")
     base_model = MobileNetV3Small(input_shape=input_shape, weights='imagenet')
 
     base_model.layers.pop()
@@ -24,7 +25,6 @@ def segnet_mobilenetsmall(
         layer.trainable = False
 
     base_model = Model(base_model.input, base_model.layers[-4].output)
-    base_model.summary()
 
     pool_1, mask_1 = MaxPoolingWithArgmax2D(pool_size)(base_model.get_layer("multiply").output)
 

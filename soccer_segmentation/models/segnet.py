@@ -13,6 +13,7 @@ def segnet(
         output_mode="softmax"):
     inputs = Input(shape=input_shape)
 
+    print("Building SegNet")
     conv_1 = Convolution2D(64, (kernel, kernel), padding="same")(inputs)
     conv_1 = BatchNormalization()(conv_1)
     conv_1 = Activation("relu")(conv_1)
@@ -66,7 +67,6 @@ def segnet(
     conv_13 = Activation("relu")(conv_13)
 
     pool_5, mask_5 = MaxPoolingWithArgmax2D(pool_size)(conv_13)
-    print("Build encoder done..")
 
     # decoder
 
@@ -77,7 +77,7 @@ def segnet(
     conv_14 = Activation("relu")(conv_14)
     conv_15 = Convolution2D(512, (kernel, kernel), padding="same")(conv_14)
     conv_15 = BatchNormalization()(conv_15)
-    conv_15 = Activation("relu")(c10onv_15)
+    conv_15 = Activation("relu")(conv_15)
     conv_16 = Convolution2D(512, (kernel, kernel), padding="same")(conv_15)
     conv_16 = BatchNormalization()(conv_16)
     conv_16 = Activation("relu")(conv_16)
@@ -128,7 +128,6 @@ def segnet(
         input_shape=(input_shape[0], input_shape[1], n_labels))(conv_26)
 
     outputs = Activation(output_mode)(conv_26)
-    print("Build decoder done..")
 
     model = Model(inputs=inputs, outputs=outputs, name="SegNet")
 

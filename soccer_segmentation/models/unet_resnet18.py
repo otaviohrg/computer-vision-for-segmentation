@@ -42,6 +42,9 @@ def unet_resnet18(
 
     filter = [64, 128, 256, 512]
 
+    print("Building UNetResNet18")
+
+
     ResNet18, preprocess_input = Classifiers.get('resnet18')
     base_model = ResNet18((256, 256, 3), weights='imagenet')
 
@@ -50,12 +53,12 @@ def unet_resnet18(
     base_model.layers.pop()
     for layer in base_model.layers:
         layer.trainable = False
-
-    base_model = Model(base_model.input, base_model.layers[-3].output)
     base_model.summary()
 
+    base_model = Model(base_model.input, base_model.layers[-3].output)
+
     temp1 = base_model.get_layer("conv0").output
-    temp2 = base_model.get_layer("stage2_unit1_relu2").output
+    temp2 = base_model.get_layer("stage2_unit1_relu1").output
     temp3 = base_model.get_layer("stage3_unit1_relu1").output
     temp4 = base_model.get_layer("stage4_unit1_relu1").output
     x = base_model.get_layer("relu1").output
