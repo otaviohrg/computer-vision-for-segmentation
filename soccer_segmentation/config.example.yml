@@ -1,0 +1,5 @@
+dataset_path:
+  train: PATH_TO_TRAIN
+  test: PATH_TO_TEST
+
+checkpoint_path: PATH_TO_WEIGHTS

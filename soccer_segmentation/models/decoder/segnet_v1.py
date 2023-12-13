@@ -12,7 +12,6 @@ class SegNet(nn.Module):
 
         self.out_chn = out_chn
         self.MaxEn = nn.MaxPool2d(2, stride=2, return_indices=True)
-        self.MaxEn0 = nn.MaxPool2d(1, stride=1, return_indices=True)
 
         self.MaxDe = nn.MaxUnpool2d(2, stride=2)
 
@@ -55,15 +54,15 @@ class SegNet(nn.Module):
         x3 = inputs[3]
         x4 = inputs[4]
 
-        _, ind0 = self.MaxEn0(x0)
+        x0, ind0 = self.MaxEn(x0)
         size0 = x0.size()
-        _, ind1 = self.MaxEn(x1)
+        x1, ind1 = self.MaxEn(x1)
         size1 = x1.size()
-        _, ind2 = self.MaxEn(x2)
+        x2, ind2 = self.MaxEn(x2)
         size2 = x2.size()
-        _, ind3 = self.MaxEn(x3)
+        x3, ind3 = self.MaxEn(x3)
         size3 = x3.size()
-        _, ind4 = self.MaxEn0(x4)
+        x4, ind4 = self.MaxEn(x4)
 
         x = self.MaxDe(x4, ind4, output_size=size3)
         x = F.relu(self.BNDe53(self.ConvDe53(x)))

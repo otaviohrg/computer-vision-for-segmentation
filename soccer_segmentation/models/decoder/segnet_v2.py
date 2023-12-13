@@ -19,26 +19,26 @@ class SegNet(nn.Module):
         self.BNDe53 = nn.BatchNorm2d(512, momentum=momentum)
         self.ConvDe52 = nn.Conv2d(512, 512, kernel_size=3, padding=1)
         self.BNDe52 = nn.BatchNorm2d(512, momentum=momentum)
-        self.ConvDe51 = nn.Conv2d(512, 512, kernel_size=3, padding=1)
-        self.BNDe51 = nn.BatchNorm2d(512, momentum=momentum)
+        self.ConvDe51 = nn.Conv2d(512, 256, kernel_size=3, padding=1)
+        self.BNDe51 = nn.BatchNorm2d(256, momentum=momentum)
 
-        self.ConvDe43 = nn.Conv2d(512, 512, kernel_size=3, padding=1)
-        self.BNDe43 = nn.BatchNorm2d(512, momentum=momentum)
-        self.ConvDe42 = nn.Conv2d(512, 512, kernel_size=3, padding=1)
-        self.BNDe42 = nn.BatchNorm2d(512, momentum=momentum)
-        self.ConvDe41 = nn.Conv2d(512, 256, kernel_size=3, padding=1)
-        self.BNDe41 = nn.BatchNorm2d(256, momentum=momentum)
+        self.ConvDe43 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
+        self.BNDe43 = nn.BatchNorm2d(256, momentum=momentum)
+        self.ConvDe42 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
+        self.BNDe42 = nn.BatchNorm2d(256, momentum=momentum)
+        self.ConvDe41 = nn.Conv2d(256, 128, kernel_size=3, padding=1)
+        self.BNDe41 = nn.BatchNorm2d(128, momentum=momentum)
 
-        self.ConvDe33 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
-        self.BNDe33 = nn.BatchNorm2d(256, momentum=momentum)
-        self.ConvDe32 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
-        self.BNDe32 = nn.BatchNorm2d(256, momentum=momentum)
-        self.ConvDe31 = nn.Conv2d(256, 128, kernel_size=3, padding=1)
-        self.BNDe31 = nn.BatchNorm2d(128, momentum=momentum)
+        self.ConvDe33 = nn.Conv2d(128, 128, kernel_size=3, padding=1)
+        self.BNDe33 = nn.BatchNorm2d(128, momentum=momentum)
+        self.ConvDe32 = nn.Conv2d(128, 128, kernel_size=3, padding=1)
+        self.BNDe32 = nn.BatchNorm2d(128, momentum=momentum)
+        self.ConvDe31 = nn.Conv2d(128, 64, kernel_size=3, padding=1)
+        self.BNDe31 = nn.BatchNorm2d(64, momentum=momentum)
 
-        self.ConvDe22 = nn.Conv2d(128, 128, kernel_size=3, padding=1)
-        self.BNDe22 = nn.BatchNorm2d(128, momentum=momentum)
-        self.ConvDe21 = nn.Conv2d(128, 64, kernel_size=3, padding=1)
+        self.ConvDe22 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
+        self.BNDe22 = nn.BatchNorm2d(64, momentum=momentum)
+        self.ConvDe21 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
         self.BNDe21 = nn.BatchNorm2d(64, momentum=momentum)
 
         self.ConvDe12 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
@@ -54,15 +54,15 @@ class SegNet(nn.Module):
         x3 = inputs[3]
         x4 = inputs[4]
 
-        _, ind0 = self.MaxEn0(x0)
+        x0, ind0 = self.MaxEn(x0)
         size0 = x0.size()
-        _, ind1 = self.MaxEn(x1)
+        x1, ind1 = self.MaxEn(x1)
         size1 = x1.size()
-        _, ind2 = self.MaxEn(x2)
+        x2, ind2 = self.MaxEn(x2)
         size2 = x2.size()
-        _, ind3 = self.MaxEn(x3)
+        x3, ind3 = self.MaxEn(x3)
         size3 = x3.size()
-        _, ind4 = self.MaxEn0(x4)
+        x4, ind4 = self.MaxEn(x4)
 
         x = self.MaxDe(x4, ind4, output_size=size3)
         x = F.relu(self.BNDe53(self.ConvDe53(x)))
@@ -89,20 +89,6 @@ class SegNet(nn.Module):
 
         x = F.softmax(x, dim=1)
 
-        print(x4.size())
-        print(ind4.size())
-
-        print(x3.size())
-        print(ind3.size())
-
-        print(x2.size())
-        print(ind2.size())
-
-        print(x1.size())
-        print(ind1.size())
-
-        print(x0.size())
-        print(ind0.size())
         return x
 
 
