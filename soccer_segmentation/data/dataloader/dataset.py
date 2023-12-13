@@ -1,7 +1,7 @@
 import os
 import torch
 import glob
-import yaml
+import numpy as np
 from PIL import Image
 
 from torch.utils.data import Dataset
@@ -12,34 +12,46 @@ class DatasetSegmentation(Dataset):
     def __init__(self, folder_path, transform=None):
         super(DatasetSegmentation, self).__init__()
         self.transform = transform
-        self.img_files = glob.glob(os.path.join(folder_path, 'image', '*.png'))
+        self.img_files = glob.glob(os.path.join(folder_path, 'images', '*'))
         self.mask_files = []
         for img_path in self.img_files:
-            self.mask_files.append(os.path.join(folder_path, 'mask', os.path.basename(img_path)))
+            self.mask_files.append(os.path.join(folder_path,
+                                                'segmentations',
+                                                ".".join(os.path.basename(img_path).split(".")[:-1]) + ".png"))
 
     def __getitem__(self, index):
         img_path = self.img_files[index]
         mask_path = self.mask_files[index]
         data = Image.open(os.path.join(img_path)).convert("RGB")
-        label = Image.open(os.path.join(mask_path)).convert("L")
+        mask = Image.open(os.path.join(mask_path)).convert("L")
+
+        transform_data = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.5,), (0.5,)),
+            transforms.ToPILImage()
+        ])
+
+        transform_mask = transforms.Compose([
+            transforms.Resize((128, 128)),
+        ])
+
+        data = transform_data(data)
 
         if self.transform is not None:
             data = self.transform(data)
-            label = self.transform(label)
+            mask = self.transform(mask)
 
-        return torch.from_numpy(data).float(), torch.from_numpy(label).float()
+        mask = transform_mask(mask)
+
+        data = np.array(data)
+        mask = np.array(mask)
+
+        mask[mask <= 0.1] = 0
+        mask[mask >= 0.9] = 0.1
+        mask[mask > 0.1] = 0.2
+        mask *= 10
+
+        return torch.from_numpy(data).float(), torch.from_numpy(mask).long()
 
     def __len__(self):
         return len(self.img_files)
-
-
-if __name__ == "__main__":
-    with open("../config.yml") as config_file:
-        config = yaml.safe_load(config_file)
-
-    testTransform = transforms.Compose(
-        [transforms.Resize((224, 224)), transforms.ToTensor(), ]
-    )
-
-
-    loader = DataLoaderSegmentation("")
